@@ -22,7 +22,7 @@ class ArticlesController < ApplicationController
 
   def create 
     @article = Article.new(article_params_whitelisting)
-    @article.user = User.first # This will temporarily let us create and edit articles
+    @article.user = current_user 
     if @article.save
       flash[:notice] = "Article was successfully created"
     redirect_to @article
