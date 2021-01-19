@@ -11,4 +11,12 @@ class ApplicationController < ActionController::Base
     !!current_user # <-- turns this into a boolean, as in true or false
   end
 
+  # This is where we set the restriction that a user must be logged in to perform certain actions. We use
+  def require_user
+    if !logged_in?
+      flash[:alert] = "You must be logged in to perform that action"
+      redirect_to login_path
+    end
+  end
+
 end

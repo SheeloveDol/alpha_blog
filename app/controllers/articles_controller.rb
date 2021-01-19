@@ -1,15 +1,21 @@
 class ArticlesController < ApplicationController
-
+  # This is refactored code that was showing up ain all the "#actions" below:
   before_action :set_article, only: [:show, :edit, :update, :destroy]
 
+  # This will require that a user is logged in to be able to perform the following actions
+  # We defined this the [application_controller.rb which this controller inherits from]
+  before_action :require_user, except: [:show, :index]
+  
+  # This makes sure that only the article's creator can perform these actions
+  before_action :require_same_user, only: [:edit, :update, :destroy]
+
+
+
   def show
-    #byebug
-    # @article = Article.find(params[:id])
   end
 
   def index 
     @articles = Article.paginate(page: params[:page], per_page: 5)
-
   end
 
   def new
@@ -17,7 +23,6 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    # @article = Article.find(params[:id])
   end
 
   def create 
@@ -47,6 +52,8 @@ class ArticlesController < ApplicationController
     redirect_to articles_path
   end
 
+
+
   private 
 
   # Repeated code blocks are put inside 'private methods' and are called above
@@ -54,8 +61,17 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
   end
 
+  # This whitelists the article's parameters so that we can use them in our 'create' action
   def article_params_whitelisting
     params.require(:article).permit(:title, :description)
+  end
+
+  # This makes sure that logged in users can ONLY edit their OWN articles
+  def require_same_user
+    if current_user != @article.user
+      flash[:alert] = "You can only edit or delete your own article"
+      redirect_to @article
+    end
   end
 
 end
