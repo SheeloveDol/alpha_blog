@@ -94,6 +94,7 @@ GEM
     nio4r (2.5.4)
     nokogiri (1.11.1-x86_64-darwin)
       racc (~> 1.4)
+    pg (1.2.3)
     puma (5.1.1)
       nio4r (~> 2.0)
     racc (1.5.2)
@@ -186,6 +187,7 @@ DEPENDENCIES
   byebug
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  pg
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.1)
