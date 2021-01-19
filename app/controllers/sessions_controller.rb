@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     #byebug
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
-      session[:user_id] = user.id #to remain signed in for future request
+      session[:user_id] = user.id #to remain signed in for future actions
       flash[:notice] = "Logged in successfully"
       redirect_to user
     else

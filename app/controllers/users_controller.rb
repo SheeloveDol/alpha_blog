@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   # This requires that a user is logged in to perform these actions
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # This, (from application_controller.rb) reinforces the 'logged-in' requirement even when using the url. ie: ["/users/2/edit"]
   before_action :require_user, only: [:edit, :update]
 
   # This makes sure that logged-in users can ONLY edit their OWN profiles when trying to do so from the url
-  before_action :require_same_user, only: [:edit, :update]
+  before_action :require_same_user, only: [:edit, :update, :destroy]
 
   def show
     @articles = @user.articles.paginate(page: params[:page], per_page: 5)
@@ -44,6 +44,14 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+
+  def destroy
+    @user.destroy
+    session[:user_id] = nil #important otherwise the application will break and we will have to clear the cookies or hardcode another user into sessions
+    flash[:notice] = "Your account and all associated articles have been successfully deleted"
+    redirect_to articles_path
+  end
+
 
 
   
