@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    session[:user_id] = nil #important otherwise the application will break and we will have to clear the cookies or hardcode another user into sessions
+    session[:user_id] = nil if @user == current_user #important otherwise the application will break and we will have to clear the cookies or hardcode another user into sessions
     flash[:notice] = "Your account and all associated articles have been successfully deleted"
     redirect_to articles_path
   end
@@ -66,8 +66,9 @@ class UsersController < ApplicationController
   end
 
   # This makes sure that logged-in users can ONLY edit their OWN profiles when trying to do so from the url
+  # Added "&& !current_user.admin?" to allow admin to have editing and deleting ability.
   def require_same_user
-    if current_user != @user
+    if current_user != @user && !current_user.admin?
       flash[:alert] = "You can only edit or delete your own profile"
       redirect_to @user
     end

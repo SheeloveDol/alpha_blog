@@ -67,8 +67,9 @@ class ArticlesController < ApplicationController
   end
 
   # This makes sure that logged in users can ONLY edit their OWN articles
+  # Added the "&& !current_user.admin?" part to give an admin account to eddit and delete articles
   def require_same_user
-    if current_user != @article.user
+    if current_user != @article.user && !current_user.admin?
       flash[:alert] = "You can only edit or delete your own article"
       redirect_to @article
     end
