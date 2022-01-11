@@ -29,7 +29,7 @@ class ArticlesController < ApplicationController
     @article = Article.new(article_params_whitelisting)
     @article.user = current_user 
     if @article.save
-      flash[:notice] = "Article was successfully created"
+      flash[:notice] = "Your article was successfully created"
     redirect_to @article
     else
       render 'new'
@@ -39,7 +39,7 @@ class ArticlesController < ApplicationController
   def update
     # @article = Article.find(params[:id])
     if @article.update(article_params_whitelisting)
-      flash[:notice] = "Article was updated successfully"
+      flash[:notice] = "Your article was updated successfully"
       redirect_to @article
     else 
       render 'edit'
@@ -70,7 +70,7 @@ class ArticlesController < ApplicationController
   # Added the "&& !current_user.admin?" part to give an admin account to eddit and delete articles
   def require_same_user
     if current_user != @article.user && !current_user.admin?
-      flash[:alert] = "You can only edit or delete your own article"
+      flash[:alert] = "Ooops! You can only edit or delete your own article"
       redirect_to @article
     end
   end

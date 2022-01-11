@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params_whitelisting)
     if @user.save
       session[:user_id] = @user.id
-      flash[:notice] = "Welcome to the Alpha Blog #{@user.username}, you have successfully signed up"
+      flash[:notice] = "Welcome to the Sheelove's Blog #{@user.username}, you have successfully signed up"
       redirect_to articles_path
     else
       render 'new'
